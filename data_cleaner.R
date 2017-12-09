@@ -4,9 +4,11 @@
 ## Load libraries
 library(dplyr)
 library(lubridate)
+library(qdapRegex)
 library(readr)
 library(stringr)
 library(tidyr)
+
 
 quake_data_cleaner <- function(dt){
   ## Read in data
@@ -26,7 +28,8 @@ quake_data_cleaner <- function(dt){
                            )
 
   # clean location name variable
-  quakes$LOCATION_NAME <- gsub("^.*:  ", "", quakes$LOCATION_NAME)
+  quakes$LOCATION_NAME <- unlist(qdapRegex::TC(gsub("^.*:  ", "",
+                                             quakes$LOCATION_NAME)))
 
   # converst LONGITUDE, LATITUDE to numeric
   quakes$LONGITUDE <- as.numeric(quakes$LONGITUDE)
